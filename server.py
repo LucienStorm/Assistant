@@ -3,7 +3,7 @@ import openai
 import subprocess
 import threading
 
-openai.api_key = ""
+openai.api_key = "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"
 
 def get_tag_contents(str, start_tag, end_tag):
     msg = ""
@@ -26,7 +26,15 @@ api = Flask("assistant_server")
 def run_command(cmd):
     r = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE) # Grab the output of the command
     r.wait()
-    return r
+    o = ""
+    if (r.stderr):
+        o = "System: Command failed. stderr: " + r.stderr
+    elif (r.stdin):
+        o = "System: Command succeeded. Output: " + r.stdin
+    
+    if (not o):
+        return ""
+    return run_prompt(prompt_to_inject, conversation_history + "Fiosa: ", "gpt-3.5-turbo").choices[0].message.content
 
 def run_prompt(systemPrompt, userPrompt, model): # The prompt, the OpenAI model to use, e.g gpt-3.5-turbo or davinci
         completion = openai.ChatCompletion.create(
@@ -42,7 +50,7 @@ def send_message(message):
     global conversation_history
 
     conversation_history = conversation_history + "User: " + message + "\n"
-    r = run_prompt(prompt_to_inject, conversation_history, "gpt-3.5-turbo")
+    r = run_prompt(prompt_to_inject, conversation_history + "Fiosa: ", "gpt-3.5-turbo")
     return r.choices[0].message.content
 
 fmt_start_tag = "%[message]"
@@ -64,16 +72,21 @@ def post_req(query):
 
     print(msg)
     
+    cmd = ""
+    
     if (val.find(fmt_cmd_elev_tag) > -1):
         print("Contains elevated command!")
         cmd = get_tag_contents(val, fmt_cmd_elev_tag, fmt_end_tag)
-        print("Command: " + cmd)
-        run_command("pkexec " + cmd)
+
+        p = run_command("pkexec " + cmd)
+        conversation_history += p
+
     elif (val.find(fmt_cmd_tag) > -1):
         print("Contains command!")
         cmd = get_tag_contents(val, fmt_cmd_tag, fmt_end_tag)
-        run_command(cmd) # Run our command :)
-
+        
+        p = run_command(cmd)
+        conversation_history += p
 
 
 
@@ -82,7 +95,7 @@ def post_req(query):
 
 
     
-    return json.dumps({"val": msg}), 200
+    return json.dumps({"val": msg, "commandExecution": cmd}), 200
 
 
 api.run(port=4999)

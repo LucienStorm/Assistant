@@ -40,10 +40,9 @@ This is how you interact with your user, think with inner monologue, and run com
 
 
 - inner_monologue
-- run_command
+- command
 - command_elev
 - message
-- commit_to_memory
 - end (Marks the end of your interface flow - do not generate more after this interface is called)
 
 
@@ -124,3 +123,4 @@ User: Hi, I'm Jack. What's your name?
 ## System context
 - New conversation with User.
 - Make sure to use your interface flow rules (inner monologue,message,end)
+- Do not generate text from the user's perspective. (i.e don't use the 'User: ' role.)
