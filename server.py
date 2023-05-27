@@ -1,14 +1,22 @@
 from flask import Flask, json
 import openai
-import queue
 import subprocess
 import threading
 
-openai.api_key = "INSERT_KEY_HERE"
+openai.api_key = ""
+
+def get_tag_contents(str, start_tag, end_tag):
+    msg = ""
+
+    start_index = str.find(start_tag)
+    end_index = str.find(end_tag, start_index + len(start_tag) + 1)
+
+    msg = str[start_index:end_index].strip()
+    msg = msg[len(start_tag) + 1:]
+
+    return msg
 
 prompt_to_inject = None
-prompt_queue = queue.Queue()
-command_queue = queue.Queue()
 
 with open("System.MD") as file:
     prompt_to_inject = file.read()
@@ -29,38 +37,6 @@ def run_prompt(systemPrompt, userPrompt, model): # The prompt, the OpenAI model 
         return completion
 
 conversation_history = ""
-
-def process_command_queue():
-    global prompt_to_inject
-    global conversation_history
-    while True:
-        try:
-            cmd = command_queue.get(block=False)
-            cmd_run = run_command(cmd)
-            if (cmd_run != "Command cancelled by user"):
-                output = cmd_run.stdout.read().decode() # stdout
-                stderr = cmd_run.stderr
-
-                print("[DEBUG] Output: ", output)
-                if (output):
-                    prompt_to_inject = prompt_queue.get()
-                    if (cmd_run.returncode != 0):
-                        conversation_history += "\n" + "[INTERNAL] Do not show to user: Return code of command is not zero."
-                    elif stderr:
-                        conversation_history += "\n" + "[INTERNAL] Do not show to user: Command returned error: " + stderr.read().decode()
-                    elif output:
-                        conversation_history += "\n" + "[INTERNAL] Do not show to user: Command returned output: " + output
-                    else:
-                        conversation_history += "\n" + "[INTERNAL] Do not show to user: Command produced no output or error."  
-    
-                print("[DEBUG] Running completion")
-            else:
-                conversation_history += "\n" + "[INTERNAL] Do not show to user: Command cancelled by user"
-            completion = run_prompt(prompt_to_inject, conversation_history + "\n" + "Fiosa: ", "gpt-3.5-turbo")
-            print("Response: " + completion.choices[0].message.content)
-
-        except queue.Empty:
-            break
 
 def send_message(message):
     global conversation_history
@@ -84,22 +60,22 @@ def post_req(query):
 
     conversation_history += "Fiosa: " + val + "\n"
 
-    start_index = val.find(fmt_start_tag)
-    end_index = val.find(fmt_end_tag, start_index + len(fmt_start_tag) + 1)
-
-    print("start_index: " + str(start_index))
-    print("start index value: " + val[start_index])
-    print("end_index: " + str(end_index))
-    print("end index value: " + val[end_index])
-
-
-    msg = val[start_index:end_index].strip()
-    msg = msg[len(fmt_start_tag) + 1:]
+    msg = get_tag_contents(val, fmt_start_tag, fmt_end_tag)
 
     print(msg)
-
-    if (val.find(fmt_cmd_tag) > -1 or val.find(fmt_cmd_elev_tag) > -1):
+    
+    if (val.find(fmt_cmd_elev_tag) > -1):
+        print("Contains elevated command!")
+        cmd = get_tag_contents(val, fmt_cmd_elev_tag, fmt_end_tag)
+        print("Command: " + cmd)
+        run_command("pkexec " + cmd)
+    elif (val.find(fmt_cmd_tag) > -1):
         print("Contains command!")
+        cmd = get_tag_contents(val, fmt_cmd_tag, fmt_end_tag)
+        run_command(cmd) # Run our command :)
+
+
+
 
         
 
