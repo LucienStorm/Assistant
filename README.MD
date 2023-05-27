@@ -15,8 +15,8 @@ If you'd like to contribute we are accepting input and changes in *any* of the s
 - Also look at fiosa.py but it is obsolete.
 ### The project roadmap
 (!) = priority
-[x] Running commands
-[x] Implement server and basic CLI client
-[ ] Create clients for desktop environments like GNOME (!)
-[ ] Look into using Microsoft Guidance framework to stop user perspective hallucinations
-[ ] create early builds of Linux distro
+- [x] Running commands
+- [x] Implement server and basic CLI client
+- [ ] Create clients for desktop environments like GNOME (!)
+- [ ] Look into using Microsoft Guidance framework to stop user perspective hallucinations
+- [ ] create early builds of Linux distro
