@@ -29,12 +29,14 @@ def run_command(cmd):
     o = ""
     if (r.stderr):
         o = "System: Command failed. stderr: " + r.stderr
+        conversation_history += o + "\n"
     elif (r.stdin):
         o = "System: Command succeeded. Output: " + r.stdin
+        conversation_history += o + "\n"
     
     if (not o):
         return ""
-    return run_prompt(prompt_to_inject, conversation_history + "Fiosa: ", "gpt-3.5-turbo").choices[0].message.content
+    return o
 
 def run_prompt(systemPrompt, userPrompt, model): # The prompt, the OpenAI model to use, e.g gpt-3.5-turbo or davinci
         completion = openai.ChatCompletion.create(
@@ -87,12 +89,6 @@ def post_req(query):
         
         p = run_command(cmd)
         conversation_history += p
-
-
-
-        
-
-
 
     
     return json.dumps({"val": msg, "commandExecution": cmd}), 200
