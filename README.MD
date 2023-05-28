@@ -1,4 +1,5 @@
 # Fiosa Assistant
+# [🎉 Chat on our community discussions!](https://github.com/Altronix-Linux/Assistant/discussions)
 
 ## What's the reason?
 - Windows Copilot is coming out.
@@ -7,8 +8,6 @@
 
 ## The design
 It is structured in 2 parts, the client and server. Why this approach? I chose it because we'll probably be using multiple different UIs for the assistant depending on the distro/DE. Therefore it makes sense to have a server rather than implementing the whole project from scratch in a different UI.
-
-# [🎉 Chat on our community discussions!](https://github.com/Altronix-Linux/Assistant/discussions)
 
 ## Contribute??
 If you'd like to contribute we are accepting input and changes in *any* of the source code. you can raise an issue or create a pull request. thanks :)
