@@ -3,7 +3,7 @@ import openai
 import subprocess
 import threading
 
-openai.api_key = "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"
+openai.api_key = "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"
 
 def get_tag_contents(str, start_tag, end_tag):
     msg = ""
@@ -24,14 +24,15 @@ with open("System.MD") as file:
 api = Flask("assistant_server")
 
 def run_command(cmd):
+    global conversation_history
     r = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE) # Grab the output of the command
     r.wait()
     o = ""
     if (r.stderr):
-        o = "System: Command failed. stderr: " + r.stderr
+        o = "System: Command failed. stderr: " + r.stderr.read()
         conversation_history += o + "\n"
     elif (r.stdout):
-        o = "System: Command succeeded. Output: " + r.stdout
+        o = "System: Command succeeded. Output: " + r.stdout.read()
         conversation_history += o + "\n"
     
     if (not o):
