@@ -3,7 +3,7 @@ import openai
 import subprocess
 import threading
 
-openai.api_key = "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"
+openai.api_key = ""
 
 def get_tag_contents(str, start_tag, end_tag):
     msg = ""
@@ -29,10 +29,10 @@ def run_command(cmd):
     r.wait()
     o = ""
     if (r.stderr):
-        o = "System: Command failed. stderr: " + r.stderr.read()
+        o = "System: Command failed. stderr: " + str(r.stderr.read())
         conversation_history += o + "\n"
     elif (r.stdout):
-        o = "System: Command succeeded. Output: " + r.stdout.read()
+        o = "System: Command succeeded. Output: " + str(r.stdout.read())
         conversation_history += o + "\n"
     
     if (not o):
@@ -57,6 +57,7 @@ def send_message(message):
     return r.choices[0].message.content
 
 fmt_start_tag = "%[message]"
+fmt_msg_end_tag = "%[end_message]"
 fmt_end_tag = "\n"
 fmt_cmd_tag = "%[command]"
 fmt_cmd_elev_tag = "%[command_elev]"
@@ -71,7 +72,7 @@ def post_req(query):
 
     conversation_history += "Fiosa: " + val + "\n"
 
-    msg = get_tag_contents(val, fmt_start_tag, fmt_end_tag)
+    msg = get_tag_contents(val, fmt_start_tag, fmt_msg_end_tag)
 
     print(msg)
     

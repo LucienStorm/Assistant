@@ -1,6 +1,8 @@
 # Fiosa Assistant
 # [🎉 Chat on our community discussions!](https://github.com/Altronix-Linux/Assistant/discussions)
 
+![Fiosa console](Fiosa.png)
+
 ## What's the reason?
 - Windows Copilot is coming out.
 - Linux users don't have AI integration.
