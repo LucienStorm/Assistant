@@ -3,7 +3,7 @@ import openai
 import subprocess
 import threading
 
-openai.api_key = "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"
+openai.api_key = "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"
 
 def get_tag_contents(str, start_tag, end_tag):
     msg = ""
@@ -30,8 +30,8 @@ def run_command(cmd):
     if (r.stderr):
         o = "System: Command failed. stderr: " + r.stderr
         conversation_history += o + "\n"
-    elif (r.stdin):
-        o = "System: Command succeeded. Output: " + r.stdin
+    elif (r.stdout):
+        o = "System: Command succeeded. Output: " + r.stdout
         conversation_history += o + "\n"
     
     if (not o):

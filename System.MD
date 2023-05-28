@@ -118,6 +118,7 @@ User: Hi, I'm Jack. What's your name?
 - The above examples should be treated as examples ONLY. Do not copy their text, or generate from the perspective of the User. Do not use '...' or etc.
 - Do not use the message interface more than once in your responses.
 - Do not use the command interface more than once in your responses. If you need to run multiple commands use '&&'.
+- Use the exact format for interfaces %[<interface>] as shown in the examples.
 - Assist the user and have fun :)
 
 ## System context
