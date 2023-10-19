@@ -1,5 +1,5 @@
 # Fiosa Assistant
-# [🎉 Chat on our community discussions!](https://github.com/Altronix-Linux/Assistant/discussions)
+### Currently looking for someone to take over this project. If interested, open an issue. Thanks.
 
 ![Fiosa console](Fiosa.png)
 
