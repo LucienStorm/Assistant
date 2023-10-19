@@ -1,5 +1,5 @@
 # Fiosa Assistant
-### Currently looking for someone to take over this project. If interested, open an issue. Thanks.
+## Currently looking for someone to take over this project. If interested, open an issue. Thanks.
 
 ![Fiosa console](Fiosa.png)
 
