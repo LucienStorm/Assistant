@@ -1,4 +1,8 @@
-# Fiosa Assistant
+I have forked this project because it's very in-line with what I've been trying to do. If you're reading this, you're probably in the same boat. 
+
+I'm aiming at making a privately hosted, personal AI with the user's data privacy being one of the top concerns. Another major concern is ease of use for all users. No joke: I want my parents to be able to pick up a device with an AI and not have to perform any tech support or explain anything to them. More details are in development.
+
+# Fiosa Assistant - Fork
 ## ➡️ Currently looking for someone to take over this project. If interested, open an issue. Thanks.
 
 ![Fiosa console](Fiosa.png)
